@@ -50,5 +50,5 @@ Learned real-world marketing content structuring for salons
 
 
 ## 📝 Internship Note
-This project was created as **Task 1 of my Prompt Engineering Internship with Future Interns**.  
+This project was created as **Task 2 of my Prompt Engineering Internship with Future Interns**.  
 It demonstrates basic web development skills using HTML, CSS, and JavaScript along with GitHub Pages deployment
