@@ -1,0 +1,256 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.kit{padding:1.5rem 0;max-width:680px}
+.section{margin-bottom:2.5rem}
+.section-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem;padding-bottom:10px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.section-tag{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase}
+.tag-hooks{background:#EEEDFE;color:#3C3489}
+.tag-scripts{background:#E1F5EE;color:#085041}
+.tag-cta{background:#FAECE7;color:#993C1D}
+.tag-captions{background:#FBEAF0;color:#72243E}
+.section-title{font-size:16px;font-weight:500;color:var(--color-text-primary)}
+.hooks-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hook-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px 16px;position:relative;cursor:pointer;transition:border-color .15s}
+.hook-card:hover{border-color:var(--color-border-secondary)}
+.hook-num{font-size:11px;font-weight:500;color:#7F77DD;margin-bottom:6px}
+.hook-text{font-size:13.5px;color:var(--color-text-primary);line-height:1.5}
+.copy-btn{position:absolute;top:10px;right:10px;background:none;border:none;cursor:pointer;color:var(--color-text-secondary);font-size:14px;padding:2px 4px;border-radius:4px;opacity:0;transition:opacity .15s}
+.hook-card:hover .copy-btn{opacity:1}
+.copy-btn:hover{color:var(--color-text-primary)}
+.script-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:12px;overflow:hidden}
+.script-header{padding:14px 16px;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+.script-num{font-size:11px;font-weight:500;color:#0F6E56;background:#E1F5EE;padding:2px 8px;border-radius:12px}
+.script-title{font-size:14px;font-weight:500;color:var(--color-text-primary);flex:1}
+.chevron{font-size:16px;color:var(--color-text-secondary);transition:transform .2s}
+.chevron.open{transform:rotate(180deg)}
+.script-body{padding:16px;display:none}
+.script-body.open{display:block}
+.step{margin-bottom:14px}
+.step:last-child{margin-bottom:0}
+.step-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.step-problem .step-label{color:#993C1D}
+.step-story .step-label{color:#7F77DD}
+.step-solution .step-label{color:#0F6E56}
+.step-result .step-label{color:#185FA5}
+.step-cta .step-label{color:#993556}
+.step-text{font-size:13.5px;color:var(--color-text-primary);line-height:1.6}
+.cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cta-item{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 14px;font-size:13px;color:var(--color-text-primary);line-height:1.4;cursor:pointer;border:0.5px solid var(--color-border-tertiary);transition:border-color .15s;display:flex;align-items:flex-start;gap:8px}
+.cta-item:hover{border-color:var(--color-border-secondary)}
+.cta-item i{color:#D85A30;font-size:15px;margin-top:1px;flex-shrink:0}
+.caption-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:16px;margin-bottom:10px}
+.caption-label{font-size:11px;font-weight:500;color:#993556;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.caption-text{font-size:13.5px;color:var(--color-text-primary);line-height:1.7;white-space:pre-line}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:8px 16px;font-size:13px;color:var(--color-text-primary);opacity:0;transition:opacity .2s;pointer-events:none;z-index:99}
+.toast.show{opacity:1}
+@media(max-width:480px){.hooks-grid,.cta-grid{grid-template-columns:1fr}}
+</style>
+
+<h2 class="sr-only">Salon UGC Ad Content Kit — hooks, scripts, CTAs, and Instagram captions</h2>
+<div class="kit">
+
+<div class="section">
+  <div class="section-header">
+    <span class="section-tag tag-hooks">Hooks</span>
+    <span class="section-title">10 scroll-stopping UGC hooks</span>
+  </div>
+  <div class="hooks-grid" id="hooks-grid"></div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <span class="section-tag tag-scripts">Scripts</span>
+    <span class="section-title">3 full UGC ad scripts</span>
+  </div>
+  <div id="scripts-container"></div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <span class="section-tag tag-cta">CTAs</span>
+    <span class="section-title">10 high-conversion CTA lines</span>
+  </div>
+  <div class="cta-grid" id="cta-grid"></div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <span class="section-tag tag-captions">Captions</span>
+    <span class="section-title">3 Instagram captions</span>
+  </div>
+  <div id="captions-container"></div>
+</div>
+
+</div>
+
+<div class="toast" id="toast">Copied to clipboard</div>
+
+<script>
+const hooks=[
+  "I cried in the salon chair. Not in a bad way.",
+  "This is the first time I've actually liked how I look in photos. And it happened at a salon I almost didn't book.",
+  "I've spent years hiding behind bad hair. Last Tuesday, that finally changed.",
+  "Real talk — I walked in looking like I hadn't slept in a week. I walked out looking like a main character.",
+  "My boyfriend thought I got surgery. I just got a facial and a blowout.",
+  "I've tried 6 salons in this city. None of them listened. Until this one.",
+  "POV: you finally stop settling for 'okay' and get the hair you actually wanted.",
+  "The glow-up wasn't a filter. It wasn't an angle. It was a two-hour appointment.",
+  "They fixed in 90 minutes what I've been stressing about for 3 years.",
+  "I almost cancelled my appointment. Thank god I didn't."
+];
+
+const scripts=[
+  {
+    title:"The hair confidence story",
+    service:"Haircut + Styling",
+    problem:"I had this thing where I'd avoid cameras at every event. Weddings, birthdays, even just brunch with friends — I'd duck out of photos because I genuinely hated how my hair looked in every single one. I'd been to so many salons and each time I'd show them a picture, they'd do something completely different, or tell me my hair 'can't do that.'",
+    story:"I almost didn't book this appointment either. But my friend kept insisting, so I went. The stylist actually sat with me for 15 minutes just talking — about my face shape, my lifestyle, whether I even blow-dry my hair (I don't). She wasn't rushing me. She wasn't just nodding along.",
+    solution:"She gave me a cut that works with my natural texture, not against it. Showed me how to style it in under 10 minutes. And honestly, the whole experience just felt like someone finally got it.",
+    result:"I posted a picture that same evening. No filter. No weird angles. First photo in three years where I genuinely liked how I looked. My mom called to ask what I did differently.",
+    cta:"If you've been settling for 'it's fine' — just book the appointment. Link in bio to grab your slot."
+  },
+  {
+    title:"The pre-wedding glow-up",
+    service:"Facial + Makeover",
+    problem:"My sister's wedding was three weeks away and my skin was not cooperating. I'm talking breakouts, dullness, dark circles — all of it at once. I'd been stressing about work, sleeping 5 hours a night, and honestly my skincare routine was nonexistent. I looked exhausted because I was.",
+    story:"A colleague told me to try this salon's facial + makeover package. I was skeptical — I've had facials before and they always leave my skin angry for a week. But she kept saying this one was different. So I booked it, kind of as a last resort.",
+    solution:"The esthetician took one look at my skin and completely customized the treatment. No harsh peels, no aggressive extractions. Just the right things in the right order. By the end of the session my skin felt like it had just... breathed. And then the makeup artist built on that — not to cover my skin, but to complement it.",
+    result:"Wedding day, my skin looked better than it has in years. People kept asking if I was the bride. I wasn't. But I'll take it.",
+    cta:"Don't wait till the week before. Book your glow-up session now — details in the link below."
+  },
+  {
+    title:"The 'just trying it out' story",
+    service:"Full makeover",
+    problem:"Honestly? I wasn't going through anything dramatic. I just felt a bit... invisible. Like I'd been wearing the same version of myself for so long that I'd stopped noticing. Same haircut for four years. Same makeup routine from 2019. Nothing was wrong, but nothing felt like me anymore either.",
+    story:"I saw a friend's before-and-after from this place and booked on a whim. Told them I wanted to look like myself — just a better version. The stylist laughed and said that was actually her favourite brief to work with.",
+    solution:"We changed the cut, added some dimension with colour, and they walked me through a whole new way to do my makeup for my actual skin tone. Things I'd never been told before, like which undertones work for me, how to make my eyes look more awake with one product.",
+    result:"I walked out and genuinely did not recognise myself in the mirror for a second. And then I just started smiling. My confidence that week was different. I stood differently. Spoke differently. It sounds dramatic but sometimes the outside shift creates the inside one.",
+    cta:"You don't need a reason to invest in yourself. Book a consultation — link in bio."
+  }
+];
+
+const ctas=[
+  "Book your appointment before next week's slots fill up — link in bio.",
+  "Your glow-up is one booking away. Tap the link.",
+  "First visit? DM us 'NEW' and we'll sort you out.",
+  "Stop putting it off. You've waited long enough. Link in bio.",
+  "Spots are limited this month — tap below before they're gone.",
+  "See our full menu + book in 60 seconds. Link in bio.",
+  "Gift yourself this. You actually deserve it. Link in bio.",
+  "Walk in for a trim. Walk out feeling like a different person. Book now.",
+  "DM us 'GLOW' to get our current offers + availability.",
+  "No consultation fee. No commitment. Just come see us. Link in bio."
+];
+
+const captions=[
+  {
+    label:"Caption 1 — vulnerability + transformation",
+    text:`I used to avoid mirrors. Not in a dramatic way, just… I'd walk past one and not really look. 
+
+Last week I sat in a salon chair for two hours and something shifted.
+
+My stylist didn't just cut my hair. She asked me questions. She paid attention. And when she turned me around to show me the result, I actually teared up a little. (I told her it was the product in my eyes. She knew.)
+
+Some days a good haircut really is more than a haircut.
+
+Book the appointment you've been putting off. Link in bio. 🤍
+
+#SalonDay #HairTransformation #GlowUp #SelfCare #HairGoals #BeforeAndAfter #SalonLife`
+  },
+  {
+    label:"Caption 2 — relatable + playful",
+    text:`Me showing up to my appointment: tired, stressed, running 7 minutes late, mascara from yesterday.
+
+Me leaving: that girl who has her life together and probably drinks green smoothies.
+
+No filter. No edit. Just really, really good hands doing really, really good work. ✨
+
+If you've been sleeping on a proper facial + styling session, this is your sign.
+
+🔗 Link in bio to book. Tell them what you want. They'll make it happen.
+
+#SalonGlowUp #MakeoverMagic #FacialGlow #SkincareThatWorks #HairAndBeauty #SalonExperience`
+  },
+  {
+    label:"Caption 3 — community + trust",
+    text:`Genuine question: why did no one tell me sooner?
+
+I've been doing my hair and skin routine completely wrong for years. 
+
+Spent 90 minutes with the team here and learned more than I have from five years of YouTube tutorials. They actually explained the why behind everything. What works for my texture. What my skin actually needs. What I've been doing that's making things worse. 
+
+The results spoke for themselves. But honestly? The knowledge I walked out with is what I'll remember most. 
+
+Come in for a service. Leave with a routine that actually works for you.
+
+📍 [Your City] | Book via link in bio 🔗
+
+#HairCare #SkincareEducation #SalonTips #GlowFromWithin #BeautyRoutine #HairHealth #TrustYourStylist`
+  }
+];
+
+function copyText(text,btn){
+  navigator.clipboard.writeText(text).then(()=>{
+    const toast=document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(()=>toast.classList.remove('show'),1800);
+  });
+}
+
+const hg=document.getElementById('hooks-grid');
+hooks.forEach((h,i)=>{
+  const d=document.createElement('div');
+  d.className='hook-card';
+  d.innerHTML=`<div class="hook-num">Hook ${i+1}</div><div class="hook-text">${h}</div><button class="copy-btn" aria-label="Copy hook ${i+1}"><i class="ti ti-copy"></i></button>`;
+  d.querySelector('.copy-btn').addEventListener('click',e=>{e.stopPropagation();copyText(h)});
+  hg.appendChild(d);
+});
+
+const sc=document.getElementById('scripts-container');
+scripts.forEach((s,i)=>{
+  const d=document.createElement('div');
+  d.className='script-card';
+  d.innerHTML=`
+    <div class="script-header" onclick="toggleScript(${i})">
+      <span class="script-num">Script ${i+1}</span>
+      <span class="script-title">${s.title} <span style="font-weight:400;color:var(--color-text-secondary);font-size:13px">· ${s.service}</span></span>
+      <i class="ti ti-chevron-down chevron" id="chev-${i}" aria-hidden="true"></i>
+    </div>
+    <div class="script-body" id="body-${i}">
+      <div class="step step-problem"><div class="step-label">Problem</div><div class="step-text">${s.problem}</div></div>
+      <div class="step step-story"><div class="step-label">Story</div><div class="step-text">${s.story}</div></div>
+      <div class="step step-solution"><div class="step-label">Solution</div><div class="step-text">${s.solution}</div></div>
+      <div class="step step-result"><div class="step-label">Result</div><div class="step-text">${s.result}</div></div>
+      <div class="step step-cta"><div class="step-label">CTA</div><div class="step-text">${s.cta}</div></div>
+    </div>`;
+  sc.appendChild(d);
+});
+
+window.toggleScript=function(i){
+  const body=document.getElementById(`body-${i}`);
+  const chev=document.getElementById(`chev-${i}`);
+  const open=body.classList.toggle('open');
+  chev.classList.toggle('open',open);
+};
+
+const cg=document.getElementById('cta-grid');
+ctas.forEach((c,i)=>{
+  const d=document.createElement('div');
+  d.className='cta-item';
+  d.innerHTML=`<i class="ti ti-arrow-right" aria-hidden="true"></i><span>${c}</span>`;
+  d.addEventListener('click',()=>copyText(c));
+  cg.appendChild(d);
+});
+
+const cc=document.getElementById('captions-container');
+captions.forEach(cap=>{
+  const d=document.createElement('div');
+  d.className='caption-card';
+  d.innerHTML=`<div class="caption-label">${cap.label}</div><div class="caption-text">${cap.text}</div>`;
+  cc.appendChild(d);
+});
+
+toggleScript(0);
+</script>
